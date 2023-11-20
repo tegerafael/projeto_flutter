@@ -9,9 +9,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.pink
+      ),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Consulta de CEP'),
+          title: const Text('Entrega'),
         ),
         body: CepSearchPage(),
       ),
@@ -26,6 +29,10 @@ class CepSearchPage extends StatefulWidget {
 
 class _CepSearchPageState extends State<CepSearchPage> {
   final cepController = TextEditingController();
+  TextEditingController logradouroController = TextEditingController();
+  TextEditingController bairroController = TextEditingController();
+  TextEditingController cidadeController = TextEditingController();
+  TextEditingController estadoController = TextEditingController();
   Map<String, dynamic> cepInfo = {};
 
   @override
@@ -45,17 +52,38 @@ class _CepSearchPageState extends State<CepSearchPage> {
               final info = await service.fetchCepInfo(cep);
               setState(() {
                 cepInfo = info;
+                logradouroController.text = cepInfo['logradouro'] ?? '';
+                bairroController.text = cepInfo['bairro'] ?? '';
+                cidadeController.text = cepInfo['localidade'] ?? '';
+                estadoController.text = cepInfo['uf'] ?? '';
               });
             },
             child: const Text('Consultar CEP'),
           ),
-          const SizedBox(height: 50),
-          const Text('Endereço:'),
-          Text('CEP: ${cepInfo['cep']}'),
-          Text('Logradouro: ${cepInfo['logradouro']}'),
-          Text('Bairro: ${cepInfo['bairro']}'),
-          Text('Cidade: ${cepInfo['localidade']}'),
-          Text('Estado: ${cepInfo['uf']}'),
+          const SizedBox(height: 20),
+          TextField(
+            controller: logradouroController,
+            decoration: const InputDecoration(labelText: 'Logradouro'),
+          ),
+          TextField(
+            controller: bairroController,
+            decoration: const InputDecoration(labelText: 'Bairro'),
+          ),
+          TextField(
+            controller: cidadeController,
+            decoration: const InputDecoration(labelText: 'Cidade'),
+          ),
+          TextField(
+            controller: estadoController,
+            decoration: const InputDecoration(labelText: 'Estado'),
+          ),
+          const SizedBox(height: 30),
+          Text(
+            'Cliente: Tiago',
+            style: TextStyle(fontSize: 18),
+          ),
+          const SizedBox(height: 30),
+          Text('Produtos: Bolo de Morango', style: TextStyle(fontSize: 18))
         ],
       ),
     );
