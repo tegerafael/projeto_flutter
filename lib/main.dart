@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'update.dart';
+import 'show.dart'; // Importando o arquivo show.dart
 
 void main() {
   runApp(MyApp());
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.pink,
       ),
-      home: UpdateScreen(), // Definindo UpdateScreen como a tela inicial
+      home: CatalogPage(), // Chama a tela do catálogo definida em show.dart
     );
   }
 }
