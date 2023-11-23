@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'show.dart'; // Importando o arquivo show.dart
+import 'login.dart'; // Supondo que este é o arquivo que contém a tela de catálogo
 
 void main() {
   runApp(MyApp());
@@ -9,11 +9,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.pink,
+        primarySwatch: Colors.pink, // Define a cor principal como rosa
+        // Outras propriedades do tema...
       ),
-      home: CatalogPage(), // Chama a tela do catálogo definida em show.dart
+      home: LoginScreen(), // ou outra tela inicial
     );
   }
 }
