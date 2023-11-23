@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'update.dart'; // Certifique-se de que o caminho esteja correto
-import 'create.dart'; // Importe a tela de criação
+import 'update_adm.dart'; // Certifique-se de que o caminho esteja correto
+import 'create_adm.dart'; // Importe a tela de criação
 
 // Tela do Catálogo
 class ShowAdm extends StatelessWidget {

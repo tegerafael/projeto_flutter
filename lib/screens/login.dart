@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'read_cus.dart';  // Tela inicial para o cliente
-import 'show_adm.dart';  // Tela inicial para o administrador
+import 'customer/read_cus.dart';  // Tela inicial para o cliente
+import 'adm/read_adm.dart';  // Tela inicial para o administrador
 
 class LoginScreen extends StatefulWidget {
   @override
