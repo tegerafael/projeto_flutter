@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
-import 'update_adm.dart'; // Certifique-se de que o caminho esteja correto
-import 'create_adm.dart'; // Importe a tela de criação
+import 'update_adm.dart';
+import 'create_adm.dart';
+import 'dart:io';
 
-// Tela do Catálogo
-class ShowAdm extends StatelessWidget {
+class ShowAdm extends StatefulWidget {
+  @override
+  _ShowAdmState createState() => _ShowAdmState();
+}
+
+class _ShowAdmState extends State<ShowAdm> {
+  List<Map<String, dynamic>> items = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,26 +18,43 @@ class ShowAdm extends StatelessWidget {
         title: const Text('Catálogo'),
       ),
       body: ListView.builder(
-        itemCount: 10,
+        itemCount: items.length,
         itemBuilder: (context, index) {
+          final item = items[index];
           return Card(
-            child: Stack(
-              alignment: Alignment.bottomRight,
-              children: <Widget>[
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
                 Container(
                   height: 200,
-                  color: Colors.grey,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: FileImage(File(item['imagePath'])),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.all(10.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => UpdateScreen()),
-                      );
-                    },
-                    child: Icon(Icons.edit, color: Colors.white),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        item['name'],
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UpdateScreen()),
+                          );
+                        },
+                        child: Icon(Icons.edit, color: Colors.red),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -39,14 +63,20 @@ class ShowAdm extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          final newItem = await Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => CreateScreen()),
           );
+
+          if (newItem != null) {
+            setState(() {
+              items.add(newItem);
+            });
+          }
         },
-        child: Icon(Icons.add), // Ícone de adição
-        backgroundColor: Colors.pink, // Cor do botão
+        child: Icon(Icons.add),
+        backgroundColor: Colors.pink,
       ),
     );
   }
