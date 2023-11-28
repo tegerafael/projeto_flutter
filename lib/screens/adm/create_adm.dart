@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
+import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 class CreateScreen extends StatefulWidget {
   @override
@@ -24,32 +26,61 @@ class _CreateScreenState extends State<CreateScreen> {
     }
   }
 
+  Future<void> _saveItem() async {
+    final directory = await getApplicationDocumentsDirectory();
+    final path = directory.path;
+    final file = File('$path/saved_data.json');
+
+    final itemData = {
+      'name': _nameController.text,
+      'kg': _kgController.text,
+      'description': _descriptionController.text,
+      'imagePath': _image != null ? _image!.path : '',
+    };
+
+    final jsonData = json.encode(itemData);
+    await file.writeAsString(jsonData);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Item salvo com sucesso!')),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Criar Novo Item'),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             TextField(
               controller: _nameController,
               decoration: InputDecoration(labelText: 'Nome'),
             ),
+            SizedBox(height: 10),
             TextField(
               controller: _kgController,
               decoration: InputDecoration(labelText: 'Peso em Kg'),
               keyboardType: TextInputType.number,
             ),
+            SizedBox(height: 10),
             TextField(
               controller: _descriptionController,
               decoration: InputDecoration(labelText: 'Descrição'),
               maxLines: 3,
             ),
             SizedBox(height: 20),
-            if (_image != null) Image.file(_image!),
+            if (_image != null)
+              Container(
+                width: double.infinity,
+                height: 200,
+                child: Image.file(_image!, fit: BoxFit.cover),
+              ),
+            SizedBox(height: 20),
             ElevatedButton.icon(
               onPressed: _pickImage,
               icon: Icon(Icons.image),
@@ -57,13 +88,7 @@ class _CreateScreenState extends State<CreateScreen> {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                // Aqui você pode adicionar a lógica para criar um novo item
-                String name = _nameController.text;
-                String kg = _kgController.text;
-                String description = _descriptionController.text;
-                // Lógica para salvar os dados
-              },
+              onPressed: _saveItem,
               child: Text('Criar Item'),
             ),
           ],

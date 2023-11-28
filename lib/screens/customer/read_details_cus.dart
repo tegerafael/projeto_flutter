@@ -1,5 +1,6 @@
+import 'package:api_flutter/main.dart';
+import 'package:api_flutter/screens/customer/buy_cus.dart';
 import 'package:flutter/material.dart';
-import 'buy_cus.dart'; // Importe a tela de compra
 
 class ReadDetailsCus extends StatelessWidget {
   final int itemIndex;
@@ -7,8 +8,9 @@ class ReadDetailsCus extends StatelessWidget {
   ReadDetailsCus({required this.itemIndex});
 
   @override
+  
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(  
       appBar: AppBar(
         title: Text('Detalhes do Item $itemIndex'),
       ),
@@ -21,7 +23,9 @@ class ReadDetailsCus extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => BuyCus()),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          Cep()),
                 );
               },
               child: Text('Comprar'),
