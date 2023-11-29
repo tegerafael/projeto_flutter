@@ -8,7 +8,7 @@ class Update extends StatefulWidget {
   final Map<String, dynamic> item;
   final Function(int index, Map<String, dynamic> updatedItem) onUpdate;
   final List<Map<String, dynamic>>
-      items; // Adiciona a lista de items como parâmetro
+      items;
 
   Update({required this.item, required this.onUpdate, required this.items});
 
@@ -26,7 +26,6 @@ class _UpdateState extends State<Update> {
   void initState() {
     super.initState();
 
-    // Preencha os controladores de texto e a imagem com os dados do item
     _nameController.text = widget.item['name'];
     _kgController.text = widget.item['kg'];
     _descriptionController.text = widget.item['description'];
@@ -45,7 +44,6 @@ class _UpdateState extends State<Update> {
   }
 
   Future<void> _updateItem() async {
-    // Lógica para atualizar os dados do item
     final directory = await getApplicationDocumentsDirectory();
     final path = directory.path;
     final file = File('$path/saved_data.json');
@@ -57,11 +55,9 @@ class _UpdateState extends State<Update> {
       'imagePath': _image != null ? _image!.path : '',
     };
 
-    // Lógica para salvar os dados atualizados no arquivo
     final jsonData = json.encode(itemData);
     await file.writeAsString(jsonData);
 
-    // Chama a função onUpdate passando o índice e os dados atualizados
     widget.onUpdate(
         widget.items.indexWhere((element) => element == widget.item), itemData);
 
@@ -115,7 +111,7 @@ class _UpdateState extends State<Update> {
               onPressed: () async {
                 await _updateItem();
                 Navigator.pop(
-                    context); // Volta para a tela anterior após a atualização
+                    context);
               },
               child: Text('Atualizar Item'),
             ),

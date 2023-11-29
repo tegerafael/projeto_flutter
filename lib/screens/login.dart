@@ -12,7 +12,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-    // Limpar os controladores quando a tela for destruída
     usernameController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -42,15 +41,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 String username = usernameController.text;
                 String password = passwordController.text;
 
-                // Lógica para cliente
                 if (username == 'vinicius' && password == '123') {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => Show()),
                   );
                 }
-                // Lógica para administrador
-                else if (username == 'tiago' && password == '123') {
+                if (username == 'tiago' && password == '123') {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => Show()),

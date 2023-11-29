@@ -59,6 +59,7 @@ class _CepSearchPageState extends State<CepSearchPage> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               TextField(
                 controller: cepController,
@@ -104,6 +105,18 @@ class _CepSearchPageState extends State<CepSearchPage> {
               const SizedBox(height: 30),
               Text('Produto: ${widget.productName}',
                   style: TextStyle(fontSize: 18)),
+              ElevatedButton(
+                onPressed: () async {
+                  const message = 'Compra efetuada com sucesso!';
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(message),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                },
+                child: const Text('Efetuar Compra'),
+              ),
             ],
           ),
         ),

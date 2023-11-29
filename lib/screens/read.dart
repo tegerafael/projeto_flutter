@@ -64,14 +64,14 @@ class _ShowState extends State<Show> {
       appBar: AppBar(
         title: Row(
           children: [
-            Icon(Icons.arrow_back), // Ícone de seta para trás
+            Icon(Icons.arrow_back),
             SizedBox(width: 8),
             Text('Catálogo'),
           ],
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.exit_to_app), // Ícone de saída
+            icon: Icon(Icons.exit_to_app),
             onPressed: _navigateToLogin,
           ),
         ],
