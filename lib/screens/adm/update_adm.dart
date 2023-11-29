@@ -6,9 +6,10 @@ import 'dart:convert';
 
 class UpdateScreen extends StatefulWidget {
   final Map<String, dynamic> item;
-  final Function(Map<String, dynamic>)? onUpdate;
+  final Function(int index, Map<String, dynamic> updatedItem) onUpdate;
+  final List<Map<String, dynamic>> items; // Adiciona a lista de items como parâmetro
 
-  UpdateScreen({required this.item, this.onUpdate});
+  UpdateScreen({required this.item, required this.onUpdate, required this.items});
 
   @override
   _UpdateScreenState createState() => _UpdateScreenState();
@@ -48,7 +49,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
     final path = directory.path;
     final file = File('$path/saved_data.json');
 
-    final updatedItem = {
+    final itemData = {
       'name': _nameController.text,
       'kg': _kgController.text,
       'description': _descriptionController.text,
@@ -56,18 +57,15 @@ class _UpdateScreenState extends State<UpdateScreen> {
     };
 
     // Lógica para salvar os dados atualizados no arquivo
-    final jsonData = json.encode(updatedItem);
+    final jsonData = json.encode(itemData);
     await file.writeAsString(jsonData);
 
-    if (widget.onUpdate != null) {
-      widget.onUpdate!(updatedItem);
-    }
+    // Chama a função onUpdate passando o índice e os dados atualizados
+    widget.onUpdate(widget.items.indexWhere((element) => element == widget.item), itemData);
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Item atualizado com sucesso!')),
     );
-
-    Navigator.pop(context); // Volta para a tela anterior após a atualização
   }
 
   @override
@@ -112,7 +110,11 @@ class _UpdateScreenState extends State<UpdateScreen> {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _updateItem,
+              onPressed: () async {
+                await _updateItem();
+                Navigator.pop(
+                    context); // Volta para a tela anterior após a atualização
+              },
               child: Text('Atualizar Item'),
             ),
           ],

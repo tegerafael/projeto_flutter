@@ -3,74 +3,13 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'update_adm.dart'; // Certifique-se de que o caminho esteja correto
-import 'create_adm.dart'; // Importe a tela de criação
-
-class ShowAdm extends StatefulWidget {
-  @override
-  _ShowAdmState createState() => _ShowAdmState();
-}
-
-class _ShowAdmState extends State<ShowAdm> {
-  List<Map<String, dynamic>> items = [];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Catálogo'),
-      ),
-      body: ListView.builder(
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          return Card(
-            child: Stack(
-              alignment: Alignment.bottomRight,
-              children: <Widget>[
-                Container(
-                  height: 200,
-                  color: Colors.grey,
-                ),
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                UpdateScreen(item: items[index])),
-                      );
-                    },
-                    child: Icon(Icons.edit, color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final newItem = await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CreateScreen()),
-          );
-
-          if (newItem != null) {
-            setState(() {
-              items.add(newItem);
-            });
-          }
-        },
-        child: Icon(Icons.add),
-        backgroundColor: Colors.pink,
-      ),
-    );
-  }
-}
+import 'update_adm.dart';
 
 class CreateScreen extends StatefulWidget {
+  final List<Map<String, dynamic>> items;
+
+  CreateScreen({required this.items});
+
   @override
   _CreateScreenState createState() => _CreateScreenState();
 }
