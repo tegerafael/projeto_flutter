@@ -17,6 +17,9 @@ class CepService {
 }
 
 class Cep extends StatelessWidget {
+  final String productName;
+  Cep({required this.productName});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,13 +28,17 @@ class Cep extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Entrega'),
         ),
-        body: CepSearchPage(),
+        body: CepSearchPage(productName: productName),
       ),
     );
   }
 }
 
 class CepSearchPage extends StatefulWidget {
+  final String productName;
+
+  CepSearchPage({required this.productName});
+
   @override
   _CepSearchPageState createState() => _CepSearchPageState();
 }
@@ -42,6 +49,7 @@ class _CepSearchPageState extends State<CepSearchPage> {
   TextEditingController bairroController = TextEditingController();
   TextEditingController cidadeController = TextEditingController();
   TextEditingController estadoController = TextEditingController();
+  TextEditingController numeroController = TextEditingController();
   Map<String, dynamic> cepInfo = {};
 
   @override
@@ -67,6 +75,7 @@ class _CepSearchPageState extends State<CepSearchPage> {
                     bairroController.text = cepInfo['bairro'] ?? '';
                     cidadeController.text = cepInfo['localidade'] ?? '';
                     estadoController.text = cepInfo['uf'] ?? '';
+                    numeroController.text = '';
                   });
                 },
                 child: const Text('Consultar CEP'),
@@ -88,13 +97,13 @@ class _CepSearchPageState extends State<CepSearchPage> {
                 controller: estadoController,
                 decoration: const InputDecoration(labelText: 'Estado'),
               ),
-              const SizedBox(height: 30),
-              Text(
-                'Cliente: Vinicius',
-                style: TextStyle(fontSize: 18),
+              TextField(
+                controller: numeroController,
+                decoration: const InputDecoration(labelText: 'Número'),
               ),
               const SizedBox(height: 30),
-              Text('Produtos: Bolo de Morango', style: TextStyle(fontSize: 18)),
+              Text('Produto: ${widget.productName}',
+                  style: TextStyle(fontSize: 18)),
             ],
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:api_flutter/screens/buy.dart';
 import 'package:api_flutter/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'update.dart';
@@ -27,6 +28,12 @@ class _ShowState extends State<Show> {
         ),
       ),
     );
+
+    if (updatedItem != null) {
+      setState(() {
+        items.add(updatedItem);
+      });
+    }
   }
 
   Future<void> _createItem() async {
@@ -74,42 +81,52 @@ class _ShowState extends State<Show> {
         itemBuilder: (context, index) {
           final item = items[index];
           return Card(
-            child: Stack(
-              alignment: Alignment.bottomRight,
-              children: <Widget>[
-                Container(
-                  height: 250,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: FileImage(File(item['imagePath'])),
-                      fit: BoxFit.cover,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Cep(productName: item['name']),
+                  ),
+                );
+              },
+              child: Stack(
+                alignment: Alignment.bottomRight,
+                children: <Widget>[
+                  Container(
+                    height: 250,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: FileImage(File(item['imagePath'])),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 8),
-                      Text(
-                        item['name'],
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.pink,
+                  Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 8),
+                        Text(
+                          item['name'],
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.pink,
+                          ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          _updateItem(index);
-                        },
-                        child: Icon(Icons.edit, color: Colors.pink),
-                      ),
-                    ],
+                        GestureDetector(
+                          onTap: () {
+                            _updateItem(index);
+                          },
+                          child: Icon(Icons.edit, color: Colors.pink),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },
