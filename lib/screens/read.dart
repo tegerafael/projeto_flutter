@@ -31,7 +31,7 @@ class _ShowState extends State<Show> {
 
     if (updatedItem != null) {
       setState(() {
-        items.add(updatedItem);
+        items[index] = updatedItem; // Corrigindo para atualizar o item existente em vez de adicionar um novo
       });
     }
   }
@@ -62,13 +62,13 @@ class _ShowState extends State<Show> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            Icon(Icons.arrow_back),
-            SizedBox(width: 8),
-            Text('Catálogo'),
-          ],
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            // Adicione ação desejada ao pressionar o ícone de voltar
+          },
         ),
+        title: Text('Catálogo'),
         actions: [
           IconButton(
             icon: Icon(Icons.exit_to_app),
@@ -86,7 +86,7 @@ class _ShowState extends State<Show> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Cep(productName: item['name']),
+                    builder: (context) => Cep(productName: item['name'], productValue: item['valor']),
                   ),
                 );
               },
@@ -108,19 +108,24 @@ class _ShowState extends State<Show> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 8),
-                        Text(
-                          item['name'],
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.pink,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            _updateItem(index);
-                          },
-                          child: Icon(Icons.edit, color: Colors.pink),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              item['name'],
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.pink,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                _updateItem(index);
+                              },
+                              child: Icon(Icons.edit, color: Colors.pink),
+                            ),
+                          ],
                         ),
                       ],
                     ),

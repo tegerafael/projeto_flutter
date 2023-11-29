@@ -7,8 +7,7 @@ import 'dart:convert';
 class Update extends StatefulWidget {
   final Map<String, dynamic> item;
   final Function(int index, Map<String, dynamic> updatedItem) onUpdate;
-  final List<Map<String, dynamic>>
-      items;
+  final List<Map<String, dynamic>> items;
 
   Update({required this.item, required this.onUpdate, required this.items});
 
@@ -19,6 +18,7 @@ class Update extends StatefulWidget {
 class _UpdateState extends State<Update> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _kgController = TextEditingController();
+  final TextEditingController _valorController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   File? _image;
 
@@ -26,10 +26,11 @@ class _UpdateState extends State<Update> {
   void initState() {
     super.initState();
 
-    _nameController.text = widget.item['name'];
-    _kgController.text = widget.item['kg'];
-    _descriptionController.text = widget.item['description'];
-    _image = File(widget.item['imagePath']);
+    _nameController.text = widget.item['name'] ?? '';
+    _kgController.text = widget.item['kg']?.toString() ?? '';
+    _valorController.text = widget.item['valor']?.toString() ?? '';
+    _descriptionController.text = widget.item['description'] ?? '';
+    _image = widget.item['imagePath'] != null ? File(widget.item['imagePath']) : null;
   }
 
   Future<void> _pickImage() async {
@@ -51,12 +52,10 @@ class _UpdateState extends State<Update> {
     final itemData = {
       'name': _nameController.text,
       'kg': _kgController.text,
+      'valor': _valorController.text.isNotEmpty ? _valorController.text : 0.0,
       'description': _descriptionController.text,
-      'imagePath': _image != null ? _image!.path : '',
+      'imagePath': _image?.path ?? '',
     };
-
-    final jsonData = json.encode(itemData);
-    await file.writeAsString(jsonData);
 
     widget.onUpdate(
         widget.items.indexWhere((element) => element == widget.item), itemData);
@@ -87,6 +86,11 @@ class _UpdateState extends State<Update> {
               decoration: InputDecoration(labelText: 'Peso em Kg'),
               keyboardType: TextInputType.number,
             ),
+            TextField(
+              controller: _valorController,
+              decoration: InputDecoration(labelText: 'Valor'),
+              keyboardType: TextInputType.number,
+            ),
             SizedBox(height: 10),
             TextField(
               controller: _descriptionController,
@@ -110,8 +114,7 @@ class _UpdateState extends State<Update> {
             ElevatedButton(
               onPressed: () async {
                 await _updateItem();
-                Navigator.pop(
-                    context);
+                Navigator.pop(context);
               },
               child: Text('Atualizar Item'),
             ),

@@ -15,10 +15,11 @@ class CepService {
     }
   }
 }
-
 class Cep extends StatelessWidget {
   final String productName;
-  Cep({required this.productName});
+  final String productValue;
+
+  Cep({required this.productName, required this.productValue});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class Cep extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Entrega'),
         ),
-        body: CepSearchPage(productName: productName),
+        body: CepSearchPage(productName: productName, productValue: productValue),
       ),
     );
   }
@@ -36,8 +37,8 @@ class Cep extends StatelessWidget {
 
 class CepSearchPage extends StatefulWidget {
   final String productName;
-
-  CepSearchPage({required this.productName});
+  final String productValue;
+  CepSearchPage({required this.productName, required this.productValue});
 
   @override
   _CepSearchPageState createState() => _CepSearchPageState();
@@ -68,7 +69,7 @@ class _CepSearchPageState extends State<CepSearchPage> {
               ElevatedButton(
                 onPressed: () async {
                   final cep = cepController.text;
-                  final service = CepService();
+                 final service = CepService();
                   final info = await service.fetchCepInfo(cep);
                   setState(() {
                     cepInfo = info;
@@ -103,8 +104,8 @@ class _CepSearchPageState extends State<CepSearchPage> {
                 decoration: const InputDecoration(labelText: 'Número'),
               ),
               const SizedBox(height: 30),
-              Text('Produto: ${widget.productName}',
-                  style: TextStyle(fontSize: 18)),
+              Text('Produto: ${widget.productName}', style: TextStyle(fontSize: 18)),
+              Text('Valor: ${widget.productValue}', style: TextStyle(fontSize: 18)),
               ElevatedButton(
                 onPressed: () async {
                   const message = 'Compra efetuada com sucesso!';

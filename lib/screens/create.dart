@@ -17,6 +17,7 @@ class Create extends StatefulWidget {
 class _CreateState extends State<Create> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _kgController = TextEditingController();
+  final TextEditingController _valorController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   File? _image;
 
@@ -43,6 +44,7 @@ class _CreateState extends State<Create> {
     final itemData = {
       'name': _nameController.text,
       'kg': _kgController.text,
+      'valor': _valorController.text,
       'description': _descriptionController.text,
       ...await _pickImage(),
     };
@@ -76,6 +78,11 @@ class _CreateState extends State<Create> {
             TextField(
               controller: _kgController,
               decoration: InputDecoration(labelText: 'Peso em Kg'),
+              keyboardType: TextInputType.number,
+            ),
+            TextField(
+              controller: _valorController,
+              decoration: InputDecoration(labelText: 'Valor'),
               keyboardType: TextInputType.number,
             ),
             SizedBox(height: 10),

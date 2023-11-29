@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/login.dart'; // Supondo que este é o arquivo que contém a tela de catálogo
+import 'screens/login.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,10 +10,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primarySwatch: Colors.pink, // Define a cor principal como rosa
-        // Outras propriedades do tema...
+        primarySwatch: Colors.red,
       ),
-      home: LoginScreen(), // ou outra tela inicial
+      home: LoginScreen(),
     );
   }
 }
