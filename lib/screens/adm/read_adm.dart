@@ -49,7 +49,8 @@ class _ShowAdmState extends State<ShowAdm> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => UpdateScreen()),
+                                builder: (context) =>
+                                    UpdateScreen(item: items[index])),
                           );
                         },
                         child: Icon(Icons.edit, color: Colors.red),
