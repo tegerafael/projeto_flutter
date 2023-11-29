@@ -31,7 +31,7 @@ class _ShowState extends State<Show> {
 
     if (updatedItem != null) {
       setState(() {
-        items[index] = updatedItem; // Corrigindo para atualizar o item existente em vez de adicionar um novo
+        items[index] = updatedItem; 
       });
     }
   }
@@ -65,7 +65,6 @@ class _ShowState extends State<Show> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            // Adicione ação desejada ao pressionar o ícone de voltar
           },
         ),
         title: Text('Catálogo'),
