@@ -1,6 +1,5 @@
+import 'package:api_flutter/screens/read.dart';
 import 'package:flutter/material.dart';
-import 'customer/read_cus.dart'; // Tela inicial para o cliente
-import 'adm/read_adm.dart'; // Tela inicial para o administrador
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -47,14 +46,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 if (username == 'vinicius' && password == '123') {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => ReadCus()),
+                    MaterialPageRoute(builder: (context) => Show()),
                   );
                 }
                 // Lógica para administrador
                 else if (username == 'tiago' && password == '123') {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => ShowAdm()),
+                    MaterialPageRoute(builder: (context) => Show()),
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(

@@ -1,26 +1,39 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
-import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'update_adm.dart';
+import 'dart:io';
+import 'dart:convert';
 
-class CreateScreen extends StatefulWidget {
-  final List<Map<String, dynamic>> items;
+class Update extends StatefulWidget {
+  final Map<String, dynamic> item;
+  final Function(int index, Map<String, dynamic> updatedItem) onUpdate;
+  final List<Map<String, dynamic>>
+      items; // Adiciona a lista de items como parâmetro
 
-  CreateScreen({required this.items});
+  Update({required this.item, required this.onUpdate, required this.items});
 
   @override
-  _CreateScreenState createState() => _CreateScreenState();
+  _UpdateState createState() => _UpdateState();
 }
 
-class _CreateScreenState extends State<CreateScreen> {
+class _UpdateState extends State<Update> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _kgController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   File? _image;
 
-  Future<Map<String, dynamic>> _pickImage() async {
+  @override
+  void initState() {
+    super.initState();
+
+    // Preencha os controladores de texto e a imagem com os dados do item
+    _nameController.text = widget.item['name'];
+    _kgController.text = widget.item['kg'];
+    _descriptionController.text = widget.item['description'];
+    _image = File(widget.item['imagePath']);
+  }
+
+  Future<void> _pickImage() async {
     final ImagePicker _picker = ImagePicker();
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
@@ -29,13 +42,10 @@ class _CreateScreenState extends State<CreateScreen> {
         _image = File(image.path);
       });
     }
-
-    return {
-      'imagePath': _image != null ? _image!.path : '',
-    };
   }
 
-  Future<Map<String, dynamic>> _saveItem() async {
+  Future<void> _updateItem() async {
+    // Lógica para atualizar os dados do item
     final directory = await getApplicationDocumentsDirectory();
     final path = directory.path;
     final file = File('$path/saved_data.json');
@@ -44,24 +54,27 @@ class _CreateScreenState extends State<CreateScreen> {
       'name': _nameController.text,
       'kg': _kgController.text,
       'description': _descriptionController.text,
-      ...await _pickImage(),
+      'imagePath': _image != null ? _image!.path : '',
     };
 
+    // Lógica para salvar os dados atualizados no arquivo
     final jsonData = json.encode(itemData);
     await file.writeAsString(jsonData);
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Item salvo com sucesso!')),
-    );
+    // Chama a função onUpdate passando o índice e os dados atualizados
+    widget.onUpdate(
+        widget.items.indexWhere((element) => element == widget.item), itemData);
 
-    return itemData;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Item atualizado com sucesso!')),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Criar Novo Item'),
+        title: Text('Atualizar Item'),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -92,12 +105,19 @@ class _CreateScreenState extends State<CreateScreen> {
                 child: Image.file(_image!, fit: BoxFit.cover),
               ),
             SizedBox(height: 20),
+            ElevatedButton.icon(
+              onPressed: _pickImage,
+              icon: Icon(Icons.image),
+              label: Text('Selecionar Nova Imagem'),
+            ),
+            SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                final createdItem = await _saveItem();
-                Navigator.pop(context, createdItem);
+                await _updateItem();
+                Navigator.pop(
+                    context); // Volta para a tela anterior após a atualização
               },
-              child: Text('Criar Item'),
+              child: Text('Atualizar Item'),
             ),
           ],
         ),

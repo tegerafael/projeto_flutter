@@ -1,22 +1,22 @@
 import 'package:api_flutter/screens/login.dart';
 import 'package:flutter/material.dart';
-import 'update_adm.dart';
-import 'create_adm.dart';
+import 'update.dart';
+import 'create.dart';
 import 'dart:io';
 
-class ShowAdm extends StatefulWidget {
+class Show extends StatefulWidget {
   @override
-  _ShowAdmState createState() => _ShowAdmState();
+  _ShowState createState() => _ShowState();
 }
 
-class _ShowAdmState extends State<ShowAdm> {
+class _ShowState extends State<Show> {
   List<Map<String, dynamic>> items = [];
 
   Future<void> _updateItem(int index) async {
     final updatedItem = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => UpdateScreen(
+        builder: (context) => Update(
           item: items[index],
           onUpdate: (int updatedIndex, Map<String, dynamic> updatedItem) {
             setState(() {
@@ -33,7 +33,7 @@ class _ShowAdmState extends State<ShowAdm> {
     final newItem = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CreateScreen(items: items),
+        builder: (context) => Create(items: items),
       ),
     );
 

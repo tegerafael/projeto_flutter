@@ -102,7 +102,3 @@ class _CepSearchPageState extends State<CepSearchPage> {
     );
   }
 }
-
-void main() {
-  runApp(Cep());
-}
